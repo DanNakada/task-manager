@@ -40,5 +40,26 @@ def create_task():
 
     return jsonify(task.to_dict()), 201
 
+@app.route("/tasks", methods=["GET"])
+def list_tasks():
+    status_filter = request.args.get("status")
+    result = tasks
+
+    if status_filter:
+        if status_filter not in ["pending", "done"]:
+            return jsonify({"error": "Status inválido. Use 'pending' ou 'done'"}), 400
+        result = [t for t in tasks if t.status == status_filter]
+
+    return jsonify([t.to_dict() for t in result]), 200
+
+
+@app.route("/tasks/", methods=["GET"])
+def get_task(task_id):
+    task = find_task(task_id)
+    if not task:
+        return jsonify({"error": "Tarefa não encontrada"}), 404
+    return jsonify(task.to_dict()), 200
+
+
 if __name__ == "__main__":
     app.run(debug=True)
