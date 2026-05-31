@@ -74,6 +74,16 @@ def update_task(task_id):
     task.update(data)
     return jsonify(task.to_dict()), 200
 
+@app.route("/tasks/", methods=["DELETE"])
+def delete_task(task_id):
+    global tasks
+    task = find_task(task_id)
+    if not task:
+        return jsonify({"error": "Tarefa não encontrada"}), 404
+
+    tasks = [t for t in tasks if t.id != task_id]
+    return jsonify({"message": "Tarefa removida com sucesso"}), 200
+
 
 if __name__ == "__main__":
     app.run(debug=True)
