@@ -6,7 +6,6 @@ from src.app import app
 
 @pytest.fixture(autouse=True)
 def reset_state():
-    """Reseta o estado da aplicação antes e depois de cada teste."""
     app_module.state["tasks"].clear()
     app_module.state["next_id"] = 1
     yield
@@ -16,7 +15,6 @@ def reset_state():
 
 @pytest.fixture
 def client():
-    """Cria um cliente de teste do Flask."""
     app.config["TESTING"] = True
     with app.test_client() as client:
         yield client

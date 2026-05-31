@@ -1,4 +1,3 @@
-
 from flask import Flask, jsonify, request
 from src.models import Task
 
@@ -11,13 +10,10 @@ state = {
 
 
 def find_task(task_id):
-    """Busca uma tarefa pelo ID. Retorna None se não encontrar."""
     return next((t for t in state["tasks"] if t.id == task_id), None)
 
 
 def validate_task_data(data, require_title=True):
-    """Valida os dados recebidos na requisição.
-    Retorna None se válido, ou mensagem de erro se inválido."""
     if require_title and (not data or "title" not in data):
         return "O campo 'title' é obrigatório"
     if data and "title" in data and len(data["title"].strip()) == 0:
@@ -26,9 +22,9 @@ def validate_task_data(data, require_title=True):
         return "Status inválido. Use 'pending' ou 'done'"
     return None
 
+
 @app.route("/tasks", methods=["GET"])
 def list_tasks():
-    """Lista todas as tarefas. Aceita filtro por status: /tasks?status=pending"""
     status_filter = request.args.get("status")
     result = state["tasks"]
 
@@ -42,7 +38,6 @@ def list_tasks():
 
 @app.route("/tasks/<int:task_id>", methods=["GET"])
 def get_task(task_id):
-    """Busca uma tarefa específica pelo ID."""
     task = find_task(task_id)
     if not task:
         return jsonify({"error": "Tarefa não encontrada"}), 404
@@ -51,7 +46,6 @@ def get_task(task_id):
 
 @app.route("/tasks", methods=["POST"])
 def create_task():
-    """Cria uma nova tarefa. Requer 'title' no corpo da requisição."""
     data = request.get_json()
 
     error = validate_task_data(data, require_title=True)
@@ -72,7 +66,6 @@ def create_task():
 
 @app.route("/tasks/<int:task_id>", methods=["PUT"])
 def update_task(task_id):
-    """Atualiza os dados de uma tarefa existente."""
     task = find_task(task_id)
     if not task:
         return jsonify({"error": "Tarefa não encontrada"}), 404
