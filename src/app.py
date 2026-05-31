@@ -60,6 +60,20 @@ def get_task(task_id):
         return jsonify({"error": "Tarefa não encontrada"}), 404
     return jsonify(task.to_dict()), 200
 
+@app.route("/tasks/", methods=["PUT"])
+def update_task(task_id):
+    task = find_task(task_id)
+    if not task:
+        return jsonify({"error": "Tarefa não encontrada"}), 404
+
+    data = request.get_json()
+    error = validate_task_data(data, require_title=False)
+    if error:
+        return jsonify({"error": error}), 400
+
+    task.update(data)
+    return jsonify(task.to_dict()), 200
+
 
 if __name__ == "__main__":
     app.run(debug=True)
