@@ -11,3 +11,13 @@ Listagem
 Metodologia
 
 Kanban com GitHub Projects.
+
+## Mudança de Escopo
+
+Durante o desenvolvimento foi identificada a necessidade
+de categorizar status das tarefas.
+
+Por esse motivo foi adicionada essa funcionalidade 
+
+A alteração exigiu atualização do Kanban e criação
+de novas tarefas relacionadas à funcionalidade.
