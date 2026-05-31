@@ -26,3 +26,4 @@ class Task:
             self.description = data["description"]
         if "status" in data and data["status"] in ["pending", "done"]:
             self.status = data["status"]
+            
